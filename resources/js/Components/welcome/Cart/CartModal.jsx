@@ -70,7 +70,7 @@ console.log("DEBUG CartModal: cart =", cart, "total =", total);
                                 </div>
                                 <div className="text-right ml-2">
                                     <p className="font-semibold text-brandBlack dark:text-white">
-                                        ${(item.price * item.qty).toFixed(2)}
+                                        bs {(item.price * item.qty).toFixed(2)}
                                     </p>
                                     <button
                                         className="text-red-500 text-sm mt-1"
@@ -89,7 +89,7 @@ console.log("DEBUG CartModal: cart =", cart, "total =", total);
                     <div className="mt-4 border-t pt-4 flex flex-col gap-4">
                         <p className="flex justify-between font-bold text-brandBlack dark:text-white mt-2">
                             <span>Total:</span>
-                            <span>${total.toFixed(2)}</span>
+                            <span>bs {total.toFixed(2)}</span>
                         </p>
 
                         {/* Botón confirmar */}
