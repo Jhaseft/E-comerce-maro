@@ -7,13 +7,15 @@ export default function SearchBar({ onSearch }) {
   const handleChange = (e) => {
     const value = e.target.value;
     setQuery(value);
-    onSearch(value); // manda el texto al padre
+    onSearch(value);
   };
 
   return (
     <div className="w-full max-w-xl mx-auto mb-10">
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brandGold w-6 h-6" />
+
+        {/* Ícono dorado */}
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#D4AF37] w-6 h-6" />
 
         <input
           type="text"
@@ -22,11 +24,17 @@ export default function SearchBar({ onSearch }) {
           placeholder="Buscar productos..."
           className="
             w-full pl-14 pr-4 py-3 
-            rounded-2xl border border-gray-300 
-            focus:outline-none focus:ring-2 focus:ring-brandGold
-            bg-white dark:bg-zinc-900 
-            text-brandBlack dark:text-white
-            shadow-md
+            rounded-2xl 
+            border border-[#E6372A]
+            bg-black
+            text-white
+            placeholder-gray-400
+            shadow-lg
+
+            focus:outline-none 
+            focus:ring-2 focus:ring-[#D4AF37]  /* aro dorado */
+            focus:border-[#E6372A]             /* borde rojo */
+            transition-all duration-300
           "
         />
       </div>

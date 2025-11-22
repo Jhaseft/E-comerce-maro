@@ -35,7 +35,7 @@ export default function ReportsSection() {
 
   // Año actual
   const anoActualInicio = new Date(hoy.getFullYear(), 0, 1);
-  const anoActualFin = new Date(hoy.getFullYear(), 11, 31);
+  const anoActualFin = new Date(hoy.getFullYear(), 11, 31); 
 
   const generarReporte = async (start = null, end = null) => {
     const d = start ? formatDate(start) : desde;

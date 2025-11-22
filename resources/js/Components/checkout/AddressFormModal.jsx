@@ -9,7 +9,7 @@ export default function AddressModal({ open, onClose, setAddress }) {
         street: "",
         city: "",
         zone: "",
-        reference: ""
+        link: ""
     });
 
     const handleChange = (e) => {
@@ -20,19 +20,22 @@ export default function AddressModal({ open, onClose, setAddress }) {
     };
 
     const handleSave = () => {
-        const parts = [
-            form.street?.trim(),
-            form.city?.trim(),
-            form.zone?.trim(),
-        ].filter(Boolean);
-
-        let fullAddress = parts.join(", ");
-
-        if (form.reference.trim() !== "") {
-            fullAddress += ` (Ref: ${form.reference.trim()})`;
+        // Validar que todos los campos estén llenos
+        if (!form.street.trim() || !form.city.trim() || !form.zone.trim() || !form.link.trim()) {
+            alert("Por favor completa todos los campos antes de guardar.");
+            return; // No hace nada si hay campos vacíos
         }
 
-        setAddress(fullAddress);
+        // Crear string legible para el administrador
+        const adminAddress = `
+Calle: ${form.street.trim()}
+Ciudad: ${form.city.trim()}
+Zona: ${form.zone.trim()}
+Link: ${form.link.trim()}
+        `.trim();
+
+        // Guardamos solo un string
+        setAddress(adminAddress);
         onClose();
     };
 
@@ -52,14 +55,14 @@ export default function AddressModal({ open, onClose, setAddress }) {
                 </div>
 
                 <div className="space-y-3">
-                    {["street","city","zone","reference"].map((field) => (
+                    {["street","city","zone","link"].map((field) => (
                         <input
                             key={field}
                             name={field}
                             placeholder={
                                 field === "street" ? "Calle y número" :
                                 field === "city" ? "Ciudad" :
-                                field === "zone" ? "Zona / Barrio" : "Referencia"
+                                field === "zone" ? "Zona / Barrio" : "Link de ubicación"
                             }
                             className="w-full p-2 rounded bg-[#141426] border border-gray-600 
                                        text-white placeholder-gray-300 

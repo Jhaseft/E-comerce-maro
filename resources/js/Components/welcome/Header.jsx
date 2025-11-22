@@ -2,63 +2,65 @@ import { Link, usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 
 export default function Header({ auth }) {
-  const { props } = usePage(); // props de Inertia
+  const { props } = usePage();
   const [flashMessage, setFlashMessage] = useState(null);
 
-  // Detectar mensaje flash
   useEffect(() => {
     if (props?.flash?.success) {
       setFlashMessage({ type: 'success', message: props.flash.success });
-      setTimeout(() => setFlashMessage(null), 2000); // desaparece en 2s
+      setTimeout(() => setFlashMessage(null), 2000);
     } else if (props?.flash?.error) {
       setFlashMessage({ type: 'error', message: props.flash.error });
-      setTimeout(() => setFlashMessage(null), 3000); // error 3s
+      setTimeout(() => setFlashMessage(null), 3000);
     }
   }, [props]);
 
   return (
     <>
-      <header className="w-full bg-brandBlack text-white shadow-md py-4 relative">
+      <header className="w-full bg-black text-white shadow-lg py-4 border-b-2 border-[#D4AF37]">
         <div className="container mx-auto flex justify-between items-center px-6">
-          {/* LOGO A LA IZQUIERDA */}
+          
+          {/* LOGO */}
           <Link href="/" className="flex items-center gap-3">
             <img
-              src="https://res.cloudinary.com/dnbklbswg/image/upload/v1763039388/automatizando_logo-removebg-preview_eekag0.png"
+              src="https://res.cloudinary.com/dcmjhycsr/image/upload/v1763822761/Captura_de_pantalla_2025-11-22_102201-removebg-preview_2_wllmrp.png"
               alt="Logo de la empresa"
-              className="h-20 w-20 md:h-32 md:w-32 object-contain rounded-lg shadow-lg transition-transform duration-300 hover:scale-105"
+              className="h-20 w-52 md:h-40 md:w-72 object-contain transition-transform duration-300 hover:scale-105 drop-shadow-lg"
             />
           </Link>
 
-          {/* NAVEGACIÓN A LA DERECHA */}
-          <nav className="flex gap-6 text-lg md:text-xl font-medium">
+          {/* NAV */}
+          <nav className="flex   md:text-xl md:gap-10 text-xs gap-2 font-medium">
             {auth?.user ? (
-              <>
-                <Link
-                  href={route('welcome')}
-                  className="relative hover:text-brandGold transition duration-300 after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-brandGold after:transition-all after:duration-300 hover:after:w-full"
-                >
-                  Perfil
-                </Link>
+
                 <Link
                   href={route('logout')}
                   method="post"
                   as="button"
-                  className="relative hover:text-brandGold transition duration-300 after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-brandGold after:transition-all after:duration-300 hover:after:w-full"
+                  className="relative hover:text-[#D4AF37] transition duration-300 
+                             after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 
+                             after:bg-[#D4AF37] after:transition-all after:duration-300 hover:after:w-full"
                 >
                   Log Out
                 </Link>
-              </>
+            
             ) : (
               <>
                 <Link
                   href={route('login')}
-                  className="relative hover:text-brandGold transition duration-300 after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-brandGold after:transition-all after:duration-300 hover:after:w-full"
+                  className="relative hover:text-[#D4AF37] transition duration-300 
+                             after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 
+                             after:bg-[#D4AF37] after:transition-all after:duration-300 hover:after:w-full
+                             "
                 >
                   Iniciar sesión
                 </Link>
+
                 <Link
                   href={route('register')}
-                  className="relative hover:text-brandGold transition duration-300 after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-brandGold after:transition-all after:duration-300 hover:after:w-full"
+                  className="relative hover:text-[#D4AF37] transition duration-300 
+                             after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 
+                             after:bg-[#D4AF37] after:transition-all after:duration-300 hover:after:w-full"
                 >
                   Registrarse
                 </Link>
@@ -68,19 +70,18 @@ export default function Header({ auth }) {
         </div>
       </header>
 
-      {/* Mensaje flash debajo del Header */}
+      {/* FLASH MESSAGE */}
       {flashMessage && (
         <div
-          className={`fixed top-20 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${
-            flashMessage.type === 'success'
-              ? 'bg-black'
-              : 'bg-red-600'
-          } text-white px-6 py-4 rounded-lg shadow-lg animate-slideDown`}
+          className={`fixed top-20 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 
+            ${flashMessage.type === 'success' ? 'bg-[#D4AF37] text-black' : 'bg-[#D92323] text-white'} 
+            px-6 py-4 rounded-lg shadow-xl animate-slideDown`}
         >
           {flashMessage.message}
         </div>
       )}
 
+      {/* Animación */}
       <style>
         {`
           @keyframes slideDown {

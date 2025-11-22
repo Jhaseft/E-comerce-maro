@@ -1,3 +1,4 @@
+'use client';
 import { Map, Pencil } from 'lucide-react';
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
@@ -39,8 +40,6 @@ export default function ShippingForm({
 
                 {/* Radios */}
                 <div className="flex flex-col gap-2">
-
-                    {/* Recojo local */}
                     <label
                         className={`border p-3 rounded cursor-pointer ${
                             shippingType === 'local'
@@ -54,15 +53,14 @@ export default function ShippingForm({
                             value="local"
                             className="mr-2"
                             checked={shippingType === 'local'}
-                            onChange={(e) => {
+                            onChange={() => {
                                 setShippingType("local");
-                                setAddress("Recojo en el local"); // ✔️ SE SETEA AUTO
+                                setAddress("Recojo en el local");
                             }}
                         />
                         <span className="font-semibold text-white">Recojo en el local</span>
                     </label>
 
-                    {/* Envío a domicilio */}
                     <label
                         className={`border p-3 rounded cursor-pointer ${
                             shippingType === 'envio'
@@ -76,9 +74,9 @@ export default function ShippingForm({
                             value="envio"
                             className="mr-2"
                             checked={shippingType === 'envio'}
-                            onChange={(e) => {
+                            onChange={() => {
                                 setShippingType("envio");
-                                setAddress(""); // ✔️ OBLIGAR A LLENAR
+                                setAddress(""); // obliga a llenar
                             }}
                         />
                         <span className="font-semibold text-white">Pedido a domicilio</span>
@@ -88,13 +86,11 @@ export default function ShippingForm({
                 {/* Dirección */}
                 {shippingType === 'envio' && (
                     <div className="mt-4">
-
                         {address ? (
                             <div className="border border-gray-700 p-3 rounded bg-gray-900">
                                 <p className="text-gray-300 text-sm mb-2">
                                     <strong>Dirección:</strong> {address}
                                 </p>
-
                                 <button
                                     className="flex items-center gap-2 w-full justify-center border border-gray-600 rounded p-2 text-white hover:bg-gray-700"
                                     onClick={() => setShowAddressModal(true)}
@@ -119,7 +115,7 @@ export default function ShippingForm({
                     <DatePicker
                         className="w-full bg-black border border-gray-600 rounded p-2 text-white"
                         selected={date}
-                        onChange={(date) => setDate(date)}
+                        onChange={setDate}
                         minDate={new Date()}
                         placeholderText="Seleccione una fecha"
                         dateFormat="dd/MM/yyyy"

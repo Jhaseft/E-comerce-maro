@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ReporteVentasExport;
 use Barryvdh\DomPDF\Facade\Pdf; // Nota: PDF → Pdf con P mayúscula
-
+ 
 
 class ReportController extends Controller
 {

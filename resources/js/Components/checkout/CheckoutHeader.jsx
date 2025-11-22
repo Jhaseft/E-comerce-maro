@@ -6,7 +6,7 @@ export default function CheckoutHeader() {
         <div className="flex justify-between items-center mb-4">
             <div>
                 <h1 className="text-2xl font-bold text-brandGold">Checkout</h1>
-                <h2 className="text-4xl font-semibold text-white">Automatizando</h2>
+                <h2 className="text-4xl font-semibold text-white">Distribuidora Aguilar</h2>
             </div>
             <Link href="/" className="text-white hover:text-brandGold">
                 <Home size={28} />

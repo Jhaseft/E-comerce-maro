@@ -11,25 +11,34 @@ import { Head, router } from '@inertiajs/react';
 
 export default function CheckoutPageContent({ auth }) {
     const { cart = [], subtotal = 0, total = 0 } = useCart();
-    const [loading, setLoading] = useState(true); // carga de artículos
-    const [processing, setProcessing] = useState(false); // spinner del botón
+    const [loading, setLoading] = useState(true);
+    const [processing, setProcessing] = useState(false);
     const [shippingType, setShippingType] = useState("local");
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState(null); // ✅ Inicializado como null
     const [time, setTime] = useState("");
     const [address, setAddress] = useState("Recojo en el local");
 
-    // Detecta cuando los artículos están cargados
     useEffect(() => {
         if (cart.length > 0) setLoading(false);
     }, [cart]);
 
     const handlePlaceOrder = () => {
-        if (shippingType === "envio" && address.trim() === "") {
-            alert("Debes ingresar una dirección para el envío a domicilio.");
-            return;
+        if (shippingType === "envio") {
+            if (!address.trim()) {
+                alert("Debes ingresar una dirección para el envío a domicilio.");
+                return;
+            }
+            if (!date) {
+                alert("Debes seleccionar una fecha de entrega.");
+                return;
+            }
+            if (!time) {
+                alert("Debes seleccionar una hora de entrega.");
+                return;
+            }
         }
 
-        setProcessing(true); // inicia spinner
+        setProcessing(true);
 
         const orderItems = cart.map(item => ({
             id: item.id,
@@ -50,12 +59,10 @@ export default function CheckoutPageContent({ auth }) {
         }, {
             onError: (errors) => {
                 console.error("Error al crear pedido: ", errors);
-                setProcessing(false); // detiene spinner
+                setProcessing(false);
             },
             onSuccess: () => {
-                
                 setProcessing(false);
-                
             }
         });
     };

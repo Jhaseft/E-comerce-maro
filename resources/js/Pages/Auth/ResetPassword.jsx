@@ -26,7 +26,7 @@ export default function ResetPassword({ token, email }) {
                 {/* LOGO */}
                 <div className="flex justify-center mb-6">
                     <img
-                        src="https://res.cloudinary.com/dnbklbswg/image/upload/v1763039388/automatizando_logo-removebg-preview_eekag0.png"
+                        src="https://res.cloudinary.com/dcmjhycsr/image/upload/v1763825595/Captura_de_pantalla_2025-11-22_102220-removebg-preview_eur39c.png"
                         alt="Logo"
                         className="h-24 object-contain"
                     />

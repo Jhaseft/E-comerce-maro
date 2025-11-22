@@ -25,7 +25,7 @@ export default function Layout({ title, auth, children }) {
 
         {/* Botón WhatsApp */}
         <a
-          href="https://wa.me/59165359695"
+          href="https://wa.me/63736494"
           target="_blank"
           className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-green-500 shadow-xl flex items-center justify-center hover:bg-green-600 transition"
         >
