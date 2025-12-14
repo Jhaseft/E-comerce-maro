@@ -72,7 +72,7 @@ export default function ProductGallery({ multimedia, productName }) {
             )}
           </div>
         ))}
-      </div>
+      </div> 
 
       {mobileImage && (
         <div className="fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center z-[100000] p-4">
