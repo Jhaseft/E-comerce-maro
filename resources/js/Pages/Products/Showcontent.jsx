@@ -62,7 +62,7 @@ export default function ShowProduct({ product }) {
   return (
     <div className="max-w-7xl mx-auto py-10 px-4 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
 
-  {/* Galería con scroll independiente */}
+
   <div className="max-h-[80vh] overflow-y-auto">
     <ProductGallery
       multimedia={multimedia}
@@ -70,7 +70,7 @@ export default function ShowProduct({ product }) {
     />
   </div>
 
-  {/* Descripción siempre visible */}
+ 
   <div className="space-y-6 sticky top-0" style={{ fontFamily: "'Playfair Display', serif" }}>
     <h1 className="text-4xl font-extrabold uppercase text-turquoise">{product.name}</h1>
     <p className="text-3xl font-bold text-turquoise">$ {Number(product.price).toFixed(2)}</p>
