@@ -27,62 +27,27 @@ export default function MethodPay({ method, setMethod }) {
                 </label>
 
                 <div
-                    className={`mt-3 border border-grayCustom rounded-xl bg-gray-50 overflow-hidden transition-all duration-500 ease-out ${method === "transfer" ? "max-h-[500px]" : "max-h-0"
-                        }`}
+                    className={`mt-3 border border-grayCustom rounded-xl bg-gray-50 overflow-hidden transition-all duration-500 ease-out ${
+                        method === "transfer" ? "max-h-[600px]" : "max-h-0"
+                    }`}
                 >
                     <div className="p-5 space-y-3">
-                        <p className="text-darkGray font-semibold text-lg flex items-center gap-2">
-                            Realiza tu pago en nuestra cuenta bancaria:
+                        <p className="text-darkGray font-semibold text-lg">
+                            Realiza tu pago mediante transferencia bancaria:
                         </p>
 
-                        <p className="text-darkGray font-bold text-xl">
-                            3000194483 (BNB) – ETHERNITA SRL
-                        </p>
+                        <div className="text-darkGray text-sm space-y-1">
+                            <p><span className="font-semibold">Titular:</span> Mackarena Soledad Rojas Aedo</p>
+                            <p><span className="font-semibold">RUT:</span> 16.674.889-5</p>
+                            <p><span className="font-semibold">Banco:</span> Mercado Pago</p>
+                            <p><span className="font-semibold">Tipo de cuenta:</span> Cuenta Vista</p>
+                            <p><span className="font-semibold">N° de cuenta:</span> 1017445099</p>
+                            <p><span className="font-semibold">Correo:</span> rojasaedomackarena@gmail.com</p>
+                        </div>
 
-                        <p className="text-grayCustom text-sm leading-relaxed">
-                            Por favor, usa el número del pedido como referencia de pago.<br />
-                            Tu pedido no se procesará hasta que se haya recibido el importe en nuestra cuenta.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            {/* Pago por QR */}
-            <div className="mb-4">
-                <label
-                    className="flex items-center gap-3 cursor-pointer"
-                    onClick={() => setMethod("qr")}
-                >
-                    <input
-                        type="radio"
-                        value="qr"
-                        checked={method === "qr"}
-                        readOnly
-                        className="w-5 h-5 text-turquoise accent-turquoise"
-                    />
-                    <span className="text-darkGray font-medium">
-                        Pago por QR
-                    </span>
-                </label>
-
-                <div
-                    className={`mt-3 border border-grayCustom rounded-xl bg-gray-50 text-center overflow-hidden transition-all duration-500 ease-out ${method === "qr" ? "max-h-[500px]" : "max-h-0"
-                        }`}
-                >
-                    <div className="p-5 space-y-4">
-                        <p className="text-darkGray font-semibold text-lg flex justify-center items-center gap-2">
-                            Escanea el siguiente código QR:
-                        </p>
-
-                        <img
-                            src="https://res.cloudinary.com/ds2tkqwtr/image/upload/v1765626212/WhatsApp_Image_2025-12-10_at_23.23.41_pdgjqd.jpg"
-                            alt="QR de pago"
-                            className="w-48 mx-auto rounded-xl shadow-lg"
-                        />
-
-                        <p className="text-grayCustom text-sm leading-relaxed">
-                            Por favor, usa el número del pedido como referencia de pago.<br />
-                            Tu pedido no se procesará hasta que se haya recibido el importe en nuestra cuenta.
+                        <p className="text-grayCustom text-sm leading-relaxed pt-2">
+                            Por favor, utiliza el <strong>número del pedido mandado al correo registrado</strong> como referencia de pago.<br />
+                            El pedido será procesado una vez confirmado el pago.
                         </p>
                     </div>
                 </div>

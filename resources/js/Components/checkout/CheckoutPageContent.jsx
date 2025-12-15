@@ -46,10 +46,10 @@ export default function CheckoutPageContent() {
         }));
 
         const messageLines = [
-            `🛒 *Nuevo Pedido de ${customerName}*`,
-            `📞 Teléfono: ${customerPhone}`,
-            `✉️ Correo: ${customerMail}`,
-            `💳 Método de pago: ${paymentMethod === 'qr' ? 'QR' : 'Transferencia'}`,
+            ` *Nuevo Pedido de ${customerName}*`,
+            ` Teléfono: ${customerPhone}`,
+            ` Correo: ${customerMail}`,
+            ` Método de pago: ${paymentMethod === 'qr' ? 'QR' : 'Transferencia'}`,
             '',
             '*Detalles del pedido:*'
         ];
