@@ -83,7 +83,10 @@ class PedidosController extends Controller
 
             Cart::destroy();
 
-            return redirect()->route('welcome')->with('success', 'Tu pedido se realizó con éxito!');
+                    return response()->json([
+                        'success' => true,
+                        'order_id' => $order->id,
+                    ]);
 
         } catch (\Exception $e) {
             Log::error("Error creando pedido: ".$e->getMessage());
