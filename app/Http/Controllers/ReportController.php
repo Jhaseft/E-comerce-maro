@@ -7,38 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ReporteVentasExport;
 use Barryvdh\DomPDF\Facade\Pdf; // Nota: PDF → Pdf con P mayúscula
- 
- 
+
+
 class ReportController extends Controller
 {
-    public function ventas(Request $request)
-    {
-        $desde = $request->query('desde');
-        $hasta = $request->query('hasta');
-
-        if (!$desde || !$hasta) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Debes enviar una fecha desde y hasta.'
-            ], 400);
-        }
-
-        if ($desde > $hasta) {
-            [$desde, $hasta] = [$hasta, $desde];
-        }
-
-        $detalle = $this->getDetalle($desde, $hasta);
-        $totales = $this->getTotales($desde, $hasta);
-        $productos = $this->getProductos($desde, $hasta);
-
-        return response()->json([
-            'status' => 'success',
-            'rango' => compact('desde', 'hasta'),
-            'totales' => $totales,
-            'detalle' => $detalle,
-            'productos' => $productos
-        ]);
-    }
 
     private function getDetalle($desde, $hasta)
     {
@@ -68,21 +40,40 @@ class ReportController extends Controller
             ->first();
     }
 
-    private function getProductos($desde, $hasta)
-    {
-        return DB::table('order_items as oi')
-            ->join('products as p', 'p.id', '=', 'oi.product_id')
-            ->join('orders as o', 'o.id', '=', 'oi.order_id')
-            ->whereBetween(DB::raw('DATE(o.created_at)'), [$desde, $hasta])
-            ->select(
-                'p.name as producto',
-                DB::raw('SUM(oi.quantity) as cantidad_total'),
-                DB::raw('SUM(oi.subtotal) as total_generado')
-            )
-            ->groupBy('p.name')
-            ->orderByDesc('total_generado')
-            ->get();
-    }
+  private function getProductos($desde, $hasta)
+{
+    return DB::table('order_items as oi')
+        ->join('orders as o', 'o.id', '=', 'oi.order_id')
+        ->join('products as p', 'p.id', '=', 'oi.product_id')
+
+        ->join('product_variants as pv', 'pv.sku', '=', 'oi.sku')
+        ->join('product_variant_values as pvv', 'pvv.variant_id', '=', 'pv.id')
+        ->join('product_attribute_values as pav', 'pav.id', '=', 'pvv.attribute_value_id')
+        ->join('product_attributes as pa', 'pa.id', '=', 'pav.attribute_id')
+
+        ->where('pa.name', 'Talla')
+        ->whereBetween(DB::raw('DATE(o.created_at)'), [$desde, $hasta])
+
+        ->select(
+            'o.id as orden_id',
+            'p.name as producto',
+            'pav.value as talla',
+            DB::raw('oi.price as precio_unitario'),
+            DB::raw('SUM(oi.quantity) as cantidad_total'),
+            DB::raw('SUM(oi.subtotal) as total_generado')
+        )
+        ->groupBy(
+            'o.id',
+            'p.name',
+            'pav.value',
+            'oi.price'
+        )
+        ->orderBy('o.id', 'asc')
+        ->orderByDesc('total_generado')
+        ->get();
+}
+
+
 
     /* ================= EXPORTADORES ================= */
 
@@ -94,17 +85,11 @@ class ReportController extends Controller
         );
     }
 
-    public function exportCsv(Request $request)
-    {
-        return Excel::download(
-            new ReporteVentasExport($request->desde, $request->hasta),
-            'reporte_ventas.csv'
-        );
-    }
 
     public function exportPdf(Request $request)
-    {
-        $data = [
+    {       
+
+         $data = [
             'detalle' => $this->getDetalle($request->desde, $request->hasta),
             'totales' => $this->getTotales($request->desde, $request->hasta),
             'productos' => $this->getProductos($request->desde, $request->hasta),
@@ -118,24 +103,6 @@ class ReportController extends Controller
 
 
 
-    public function productos()
-{
-    $productos = DB::table('order_items as oi')
-        ->join('products as p', 'p.id', '=', 'oi.product_id')
-        ->select(
-            'p.name as producto',
-            DB::raw('SUM(oi.quantity) as cantidad_total'),
-            DB::raw('SUM(oi.subtotal) as total_generado')
-        )
-        ->groupBy('p.name')
-        ->orderByDesc('total_generado')
-        ->get();
-
-    return response()->json([
-        'status' => 'success',
-        'productos' => $productos
-    ]);
-}
 
 /* ================= EXPORTADORES PRODUCTOS ================= */
 
@@ -147,13 +114,7 @@ public function exportExcelProductos()
     );
 }
 
-public function exportCsvProductos()
-{
-    return Excel::download(
-        new \App\Exports\ReporteProductosExport(),
-        'reporte_productos.csv'
-    );
-}
+
 
 public function exportPdfProductos()
 {
