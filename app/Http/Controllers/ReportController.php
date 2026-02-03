@@ -55,7 +55,6 @@ class ReportController extends Controller
         ->whereBetween(DB::raw('DATE(o.created_at)'), [$desde, $hasta])
 
         ->select(
-            'o.id as orden_id',
             'p.name as producto',
             'pav.value as talla',
             DB::raw('oi.price as precio_unitario'),
@@ -63,13 +62,12 @@ class ReportController extends Controller
             DB::raw('SUM(oi.subtotal) as total_generado')
         )
         ->groupBy(
-            'o.id',
             'p.name',
             'pav.value',
             'oi.price'
         )
-        ->orderBy('o.id', 'asc')
-        ->orderByDesc('total_generado')
+        ->orderBy('p.name')
+        ->orderBy('pav.value')
         ->get();
 }
 
@@ -88,7 +86,7 @@ class ReportController extends Controller
 
     public function exportPdf(Request $request)
     {       
-
+        
          $data = [
             'detalle' => $this->getDetalle($request->desde, $request->hasta),
             'totales' => $this->getTotales($request->desde, $request->hasta),

@@ -33,7 +33,6 @@ class ReporteVentasExport implements FromCollection, WithHeadings, WithMapping
             ->whereBetween(DB::raw('DATE(o.created_at)'), [$this->desde, $this->hasta])
 
             ->select(
-                'o.id as orden_id',
                 'p.name as producto',
                 'pav.value as talla',
                 'oi.price as precio_unitario',
@@ -41,12 +40,12 @@ class ReporteVentasExport implements FromCollection, WithHeadings, WithMapping
                 DB::raw('SUM(oi.subtotal) as total_generado')
             )
             ->groupBy(
-                'o.id',
                 'p.name',
                 'pav.value',
                 'oi.price'
             )
-            ->orderBy('o.id', 'asc')
+            ->orderBy('p.name')
+            ->orderBy('pav.value')
             ->get();
     }
 
@@ -54,7 +53,6 @@ class ReporteVentasExport implements FromCollection, WithHeadings, WithMapping
     public function headings(): array
     {
         return [
-            'Orden',
             'Producto',
             'Talla',
             'Precio Unitario ($)',
@@ -67,7 +65,6 @@ class ReporteVentasExport implements FromCollection, WithHeadings, WithMapping
     public function map($row): array
     {
         return [
-            $row->orden_id,
             $row->producto,
             $row->talla,
             number_format($row->precio_unitario, 2),

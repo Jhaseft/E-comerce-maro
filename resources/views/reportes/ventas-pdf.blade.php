@@ -20,12 +20,10 @@
     <p>Total vendido: $ {{ number_format($totales->total_vendido ?? 0, 2) }}</p>
     <p>Total de productos vendidos: {{ $totales->total_items_vendidos ?? 0 }}</p>
 
-
     <h3>Productos Vendidos por Talla</h3>
     <table>
         <thead>
             <tr>
-                <th>Orden</th>
                 <th>Producto</th>
                 <th>Talla</th>
                 <th>Precio Unitario ($)</th>
@@ -36,7 +34,6 @@
         <tbody>
             @foreach($productos as $p)
                 <tr>
-                    <td>{{ $p->orden_id }}</td>
                     <td>{{ $p->producto }}</td>
                     <td>{{ $p->talla }}</td>
                     <td>{{ number_format($p->precio_unitario, 2) }}</td>
