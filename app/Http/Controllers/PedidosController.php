@@ -62,7 +62,7 @@ class PedidosController extends Controller
                 ]);
             }
 
-        
+         
                     $itemsForMail = [];
             foreach ($request->cart as $item) {
                 $itemsForMail[] = [
@@ -73,9 +73,10 @@ class PedidosController extends Controller
                     'subtotal' => round($item['subtotal'], 2),
                 ];
             }
- try {
+
+        try {
             Mail::to($order->customer_email)
-    ->send(new \App\Mail\OrderConfirmation($order, $itemsForMail));
+            ->send(new \App\Mail\OrderConfirmation($order, $itemsForMail));
         } catch (\Exception $e) {
             Log::error("Error enviando correo al cliente: " . $e->getMessage());
         } 

@@ -18,7 +18,8 @@ class OrderDeliveredCustomer extends Mailable
 
     public function build()
     {
-        return $this->subject("Gracias por tu compra #{$this->order->id}")
-                    ->view('emails.order_delivered_customer');
+        return $this
+            ->subject("Gracias por tu compra #{$this->order->id}")
+            ->view('emails.order_delivered_customer');
     }
 }

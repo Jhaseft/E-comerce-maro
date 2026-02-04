@@ -9,9 +9,7 @@ use Illuminate\Support\Str;
 
 class AdminControllerDashboard extends Controller
 {
-    /**
-     * Página principal del panel admin con categorías y subcategorías
-     */
+   
     public function index(Request $request)
     {
         $perPage = $request->integer('perPage', 4);

@@ -74,9 +74,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                                                @foreach($items as $item)
+                            @foreach($items as $item)
                                 <tr>
-                                    <td style="padding:10px; border-bottom:1px solid #3a3637;">
+                                     <td style="padding:10px; border-bottom:1px solid #3a3637;">
                                         {{ $item['name'] }}
 
                                         @if(!empty($item['size']))
@@ -99,7 +99,7 @@
                                         {{ number_format($item['subtotal'], 0) }}
                                     </td>
                                 </tr>
-                                @endforeach
+                            @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>

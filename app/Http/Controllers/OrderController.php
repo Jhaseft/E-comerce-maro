@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderDeliveredAdmin;
 use App\Mail\OrderDeliveredCustomer;
+use App\Models\ProductVariant;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -71,54 +73,70 @@ class OrderController extends Controller
 
     return response()->json($order);
 }
-    /**
-     * Actualizar una orden (JSON)
-     */
-    public function update(Request $request, Order $order)
-    {
-        $request->validate([
-            'status_id'         => 'required|exists:order_statuses,id',
-            'payment_method_id' => 'required|exists:payment_methods,id',
-            'total'             => 'required|numeric|min:0',
-            'note'              => 'nullable|string|max:500',
-            'delivery_date'     => 'nullable|date',
-            'delivery_time'     => 'nullable|string|max:10',
-        ]);
+   /**
+ * Actualizar una orden (JSON)
+ */
+public function update(Request $request, Order $order)
+{
+    $request->validate([
+        'status_id'         => 'required|in:1,2',
+        'payment_method_id' => 'required|exists:payment_methods,id',
+        'total'             => 'required|numeric|min:0',
+        'note'              => 'nullable|string|max:500',
+        'delivery_date'     => 'nullable|date',
+        'delivery_time'     => 'nullable|string|max:10',
+    ]);
 
-        $previousStatus = $order->status_id;
+    $previousStatus = $order->status_id;
 
-        // Actualizar orden
-        $order->update($request->only([
-            'status_id', 'payment_method_id', 'total', 'note', 'delivery_date', 'delivery_time'
-        ]));
+    // Actualizar orden
+    $order->update($request->only([
+        'status_id',
+        'payment_method_id',
+        'total',
+        'note',
+        'delivery_date',
+        'delivery_time'
+    ]));
 
-        // Descontar stock si pasa a Completado (id=3) y antes no estaba completado
-        // Ahora asumimos que stock se maneja a nivel de variantes o disponible, así que este bloque podría ajustarse según tu lógica
-        if ($order->status_id == 3 && $previousStatus != 3) {
-            foreach ($order->items as $item) {
-                $product = $item->product;
-                // Si quieres manejar stock, debes agregar campo 'stock' o actualizar variantes aquí
-                if(property_exists($product, 'stock')) {
-                    $product->stock = max(0, $product->stock - $item->quantity);
-                    $product->save();
-                }
+    //  Cargar relaciones necesarias
+    $order->load([
+    'items.product',
+    'items.variant.values.attribute'
+    ]);
+
+    // =============================
+    // SI PASA A ENTREGADO
+    // =============================
+    if ($order->status_id == 1 && $previousStatus != 1) {
+
+        foreach ($order->items as $item) {
+
+            // SKU ES ÚNICO → buscamos directo
+            $variant = ProductVariant::where('sku', $item->sku)->first();
+
+            if (!$variant) {
+                continue; // evita crash si algo raro pasa
             }
+
+            $variant->stock = max(0, $variant->stock - $item->quantity);
+            $variant->save();
         }
 
-        // Enviar correos si pasa a Entregado (id=4) y antes no estaba entregado
-        if ($order->status_id == 4 && $previousStatus != 4) {
-            Mail::to('jhasesaat@gmail.com')->send(new OrderDeliveredAdmin($order));
-
-            if (!empty($order->customer_email)) {
-                Mail::to($order->customer_email)->send(new OrderDeliveredCustomer($order));
-            }
+        // Enviar correo al cliente
+        if ($order->customer_email) {
+            Mail::to($order->customer_email)
+                ->send(new OrderDeliveredCustomer($order));
         }
 
-        return response()->json([
-            'success' => true,
-            'order'   => $order,
-        ]);
     }
+
+    return response()->json([
+        'success' => true,
+        'order'   => $order,
+    ]);
+}
+
 
     /**
      * Eliminar una orden (JSON)
